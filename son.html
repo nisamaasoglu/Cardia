@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nabız Ölçümü</title>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://playground.anychart.com/docs/samples/BCT_Line_Chart_03/iframe" rel="canonical">
+  <meta content="Line Chart" name="keywords">
+  <meta content="AnyChart - JavaScript Charts designed to be embedded and integrated" name="description">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+  <link href="https://cdn.anychart.com/releases/8.12.0/css/anychart-ui.min.css?hcode=a0c21fc77e1449cc86299c5faa067dc4" rel="stylesheet" type="text/css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: black;
+            /*background-image: url(back.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;*/
+        }
+
+       
+        
+        .kalp img {
+  margin-top: 20px; /* Adjust as needed */
+  width: 200px;
+  height: 200px;
+  margin-left: 100px;
+  background-color: transparent;
+  animation-name: jagged;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+}
+@keyframes jagged{
+	25%{
+		transform:scale(1.4);
+	}
+}
+#container {
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+
+}
+
+#container a {
+  text-align: left;
+  font-size: 4em;
+  margin-bottom: 0;
+margin-top: 0;  
+line-height: 1;
+  text-decoration: none;
+  color: #fff;
+}
+
+#container a:nth-child(1) {
+  font-family: Monoton;
+  animation: neon1 1.5s ease-in-out infinite alternate;
+}
+
+#container a:nth-child(2) {
+  font-family: Iceland;
+  animation: neon2 1.5s ease-in-out infinite alternate;
+}
+
+#container a:nth-child(3) {
+  font-family: Pacifico;
+  animation: neon3 1.5s ease-in-out infinite alternate;
+}
+
+#container a:nth-child(4) {
+  font-family: "Press Start 2P";
+  animation: neon4 1.5s ease-in-out infinite alternate;
+}
+
+#container a:nth-child(5) {
+  font-family: Audiowide;
+  animation: neon5 1.5s ease-in-out infinite alternate;
+}
+
+#container a:nth-child(6) {
+  font-family: Vampiro One;
+  animation: neon6 1.5s ease-in-out infinite alternate;
+}
+
+/*glow*/
+
+@keyframes neon1 {
+  from {
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000, 0 0 40px #ff0000,
+      0 0 70px #ff0000, 0 0 80px #ff0000, 0 0 100px #ff0000, 0 0 150px #ff0000;
+  }
+  to {
+    text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000, 0 0 20px #ff0000,
+      0 0 35px #ff0000, 0 0 40px #ff0000, 0 0 50px #ff0000, 0 0 75px #ff0000;
+  }
+}
+
+/* Diğer neon renk animasyonları da benzer şekilde güncellenebilir */
+
+@media (max-width: 650px) {
+  #container p {
+    font-size: 3.5em;
+  }
+}
+.genel {
+    border: 2px solid #fff; /* Adjust the width and style as needed */
+    height: 100%;
+    box-sizing: border-box; /* Ensure the border is included in the height */
+}
+html, body {
+    margin:0;
+    padding: 10px;
+    height: 97%;
+}
+.ust {
+  display: flex;
+  align-items: flex-start; /* Align items to the top */
+}
+#canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1; /* Move canvas behind other elements */
+        }
+        /*KUTUCUKLAR*/
+.kutu{
+    display: flex;
+    justify-content:space-around;
+
+}
+.box {
+    display: flex;
+    border: 2px solid #fff;
+    padding: 10px;
+    background-color: transparent;
+    width: 339px;
+    height: 50px;
+    /*border-radius: 10px;*/
+color: #fff;
+align-items: center;
+justify-content: center;
+text-align: center;
+    /* Kutucuğun konumunu ve kenar boşluğunu ayarla */
+    position: relative;
+    margin-top: 83px;
+  }
+.alt {
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+}
+
+.dikkat {
+    width: 200px;
+    height: 200px;
+}
+
+.saglikligunler {
+    width: 400px;
+    height: 200px; 
+    margin-right: 0; 
+    margin-left: 160px;
+}
+
+  #realTimeChart{
+    margin-top: 100px;
+  }
+    </style>
+</head>
+<body>
+
+  
+  <canvas id="canvas"></canvas>
+
+  <div class="genel">
+    <div class="ust">
+      <div class="dikkat">
+        <img src="dikkat (1).png">
+    </div>
+    <div id="container">
+        <a href="https://www.acibadem.com.tr/ilgi-alani/kalp-hastaliklari/">
+          UYARI
+        </a>
+      </div>
+    <div class="kalp"> 
+        <img src="Designer (3).png" alt="">
+       </div>
+       <div class="saglikligunler">
+      <img src="yazi (1).png" alt="">
+       </div>
+      
+    </div>
+    <canvas id="realTimeChart" width="800" height="100" ></canvas>
+    <div class="alt">
+      
+      
+    <div class="kutu">
+      <div class="box oksijen"></div>
+      <div class="box tansiyon">Kutu 2</div>
+      <div class="box ritim">Kutu 3</div>
+      <div class="box kardiyovaskuler"></div>
+      
+    </div>
+  </div>
+    
+  
+  <script>   // Oksijen seviyesi değiştirme fonksiyonu
+    // Oksijen seviyesi değiştirme fonksiyonu
+    function changeOxygenLevel() {
+               // Oksijen seviyesini 50 ile 100 arasında rastgele oluştur
+               var oxygenLevel = Math.floor(Math.random() * 51) + 50;
+   
+               // Renk ve boyut ayarlarını yap
+               var oksijenElement = document.querySelector('.oksijen');
+               oksijenElement.style.color = oxygenLevel <= 95 ? 'red' : 'white'; // %95'ten düşükse kırmızı, aksi takdirde beyaz
+               oksijenElement.style.fontSize = '18pt'; // Font boyutunu 20 piksel olarak ayarla
+   
+               // Kutucuğun içeriğini sadece oksijen seviyesi ile güncelle
+               oksijenElement.innerHTML = "Oksijen Seviyesi: " + oxygenLevel + "%";
+           }
+   
+           // Tansiyon değeri değiştirme fonksiyonu
+           function changeBloodPressure() {
+               // Büyük tansiyon değerini 80 ile 120 arasında rastgele oluştur
+               var systolicPressure = Math.floor(Math.random() * 41) + 80;
+   
+               // Küçük tansiyon değerini büyük tansiyon değerine bağlı olarak belirle
+               var diastolicPressure = systolicPressure - Math.floor(Math.random() * 21);
+   
+               // İkinci kutuyu seç ve içeriğini sadece tansiyon değerleri ile güncelle
+               var tansiyonElement = document.querySelector('.tansiyon');
+               tansiyonElement.innerHTML = "Tansiyon Değeri: " + systolicPressure + "/" + diastolicPressure;
+               tansiyonElement.style.color = (systolicPressure > 120 || diastolicPressure < 80) ? 'red' : 'white'; // Normal değerlerin dışında ise kırmızı, aksi takdirde siyah
+               tansiyonElement.style.fontSize = '18pt'; // Font boyutunu 18 piksel olarak ayarla
+           }
+   
+           // Oksijen seviyesini başlangıçta ve ardından her 3 saniyede bir güncelle
+           function updateOxygen() {
+               // changeOxygenLevel fonksiyonunu "oksijen" sınıfına sahip her öğe için çağır
+               var oksijenBoxes = document.querySelectorAll('.oksijen');
+               oksijenBoxes.forEach(function(element) {
+                   changeOxygenLevel.call(element);
+               });
+           }
+   
+           // Tansiyon değerini başlangıçta ve ardından her 3 saniyede bir güncelle
+           function updateBloodPressure() {
+               // changeBloodPressure fonksiyonunu "tansiyon" sınıfına sahip her öğe için çağır
+               var tansiyonBoxes = document.querySelectorAll('.tansiyon');
+               tansiyonBoxes.forEach(function(element) {
+                   changeBloodPressure.call(element);
+               });
+           }
+   
+           // Başlangıçta güncelle
+           updateOxygen();
+           updateBloodPressure();
+   
+           // Her 3 saniyede bir güncelle
+           setInterval(updateOxygen, 3000);
+           setInterval(updateBloodPressure, 3000);
+   </script>
+    
+   <script>// Kalp ritmi değiştirme fonksiyonu
+       function changeHeartRate() {
+           // Rastgele kalp ritmi oluştur
+           var heartRate = Math.floor(Math.random() * 100) + 60; // Random heart rate between 60 and 160 BPM
+   
+           // İkinci kutuyu seç ve içeriğini sadece kalp ritmi ile güncelle
+           var ritimElement = document.querySelector('.ritim');
+           ritimElement.innerHTML = "Kalp Ritmi: " + heartRate + " BPM";
+           ritimElement.style.fontSize = '18pt'; // Font boyutunu 20 piksel olarak ayarla
+           ritimElement.style.color = heartRate >= 60 && heartRate <= 100 ? 'white' : 'red'; // Normal aralıkta ise beyaz, aksi takdirde kırmızı
+       }
+   
+       // Kalp ritmini başlangıçta ve ardından her 3 saniyede bir güncelle
+       function updateHeartRate() {
+           // changeHeartRate fonksiyonunu "ritim" sınıfına sahip her öğe için çağır
+           var ritimBoxes = document.querySelectorAll('.ritim');
+           ritimBoxes.forEach(function(element) {
+               changeHeartRate.call(element);
+           });
+       }
+   
+       // Başlangıçta güncelle
+       updateHeartRate();
+   
+       // Her 3 saniyede bir güncelle
+       setInterval(updateHeartRate, 3000);
+   </script>
+   <script>
+       // Kardiyovasküler sağlık bilgisini değiştirme fonksiyonu
+       function changeCardiovascularHealth() {
+               // Rastgele kardiyovasküler sağlık bilgisi oluştur
+               var cardiovascularHealth = Math.floor(Math.random() * 101); // Random value between 0 and 100
+   
+               // Üçüncü kutuyu seç ve içeriğini sadece kardiyovasküler sağlık bilgisi ile güncelle
+               var kardiyovaskulerElement = document.querySelector('.kardiyovaskuler');
+               kardiyovaskulerElement.innerHTML = "Kardiyovasküler Sağlık: " + cardiovascularHealth + "%";
+               kardiyovaskulerElement.style.fontSize = '18pt'; // Font boyutunu 20 piksel olarak ayarla
+               kardiyovaskulerElement.style.color = cardiovascularHealth >= 70 ? 'white' : 'red'; // %70 ve üzeri sağlıklı olarak beyaz, aksi takdirde kırmızı
+           }
+   
+           // Kardiyovasküler sağlık bilgisini başlangıçta ve ardından her 3 saniyede bir güncelle
+           function updateCardiovascularHealth() {
+               // changeCardiovascularHealth fonksiyonunu "kardiyovaskuler" sınıfına sahip her öğe için çağır
+               var kardiyovaskulerBoxes = document.querySelectorAll('.kardiyovaskuler');
+               kardiyovaskulerBoxes.forEach(function(element) {
+                   changeCardiovascularHealth.call(element);
+               });
+           }
+   
+           // Başlangıçta güncelle
+           updateCardiovascularHealth();
+   
+           // Her 3 saniyede bir güncelle
+           setInterval(updateCardiovascularHealth, 3000);
+   </script>
+    <script>
+      var realTimeChart;
+
+      // Initialize chart data
+      var chartData = {
+          labels: [],
+          datasets: [{
+              label: 'Nabız Değeri',
+              data: [],
+              borderColor: 'blue',
+              borderWidth: 2,
+              fill: false
+          }]
+      };
+
+      // Function to update the chart with new data
+      function updateChart(data) {
+          chartData.labels.push(new Date().toLocaleTimeString());
+          chartData.datasets[0].data.push(data.nabiz);
+
+          // Remove the oldest data point if the number of data points exceeds a certain limit
+          var maxDataPoints = 10; // Adjust as needed
+          if (chartData.labels.length > maxDataPoints) {
+              chartData.labels.shift();
+              chartData.datasets[0].data.shift();
+          }
+
+          // Update the chart
+          realTimeChart.update();
+      }
+
+      // Function to create or update the chart
+      function initializeChart() {
+          var ctx = document.getElementById('realTimeChart').getContext('2d');
+
+          if (!realTimeChart) {
+              realTimeChart = new Chart(ctx, {
+                  type: 'line',
+                  data: chartData,
+                  options: {
+                      scales: {
+                          x: [{
+                              type: 'linear',
+                              position: 'bottom'
+                          }],
+                          y: [{
+                              type: 'linear',
+                              position: 'left',
+                              min: 0,
+                              max: 200 // Adjust the max value as needed
+                          }]
+                      }
+                  }
+              });
+          } else {
+              realTimeChart.data = chartData;
+              realTimeChart.update();
+          }
+      }
+
+      // Fetch data function (replace with your actual data fetching logic)
+      function fetchData() {
+          var xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function () {
+              if (xhr.readyState == XMLHttpRequest.DONE) {
+                  if (xhr.status == 200) {
+                      var data = JSON.parse(xhr.responseText);
+                      updateChart(data);
+                  } else {
+                      console.error('Veri alınamadı. Hata kodu: ' + xhr.status);
+                  }
+              }
+          };
+
+          xhr.open('GET', 'http://192.168.1.177/', true);
+          xhr.send();
+      }
+
+      // Initialize the chart and fetch data at regular intervals
+      initializeChart();
+      setInterval(fetchData, 1000); // Adjust the interval as needed
+  </script>
+    
+  <script>
+    // Canvas elemanını ve bağlamını al
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+
+    // Canvas boyutunu pencere boyutuna ayarla
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Izgara boyutu ve aralığı
+    var size = 32; // Piksel cinsinden
+    var gap = 5; // Piksel cinsinden
+
+    // Izgara rengi
+    var color = "darkblue";
+
+    // Izgara çizgilerini çiz
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1;
+
+    // Dikey çizgileri çiz
+    for (var x = 0; x <= canvas.width; x += size + gap) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, canvas.height);
+      ctx.stroke();
+    }
+
+    // Yatay çizgileri çiz
+    for (var y = 0; y <= canvas.height; y += size + gap) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(canvas.width, y);
+      ctx.stroke();
+    }
+  </script>
+        
+
+</body>
+</html>
