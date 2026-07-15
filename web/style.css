@@ -1,0 +1,369 @@
+/* Cardia dashboard - dark instrument-panel styling, no external fonts or CDNs. */
+
+:root {
+  --bg: #05070c;
+  --panel: rgba(12, 18, 30, 0.72);
+  --line: rgba(120, 160, 220, 0.22);
+  --text: #e8eef8;
+  --muted: #7f90aa;
+  --red: #ff2d46;
+  --red-soft: rgba(255, 45, 70, 0.35);
+  --green: #2de08a;
+  --amber: #ffb02e;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+#grid {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+.shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 22px 20px 32px;
+}
+
+/* ------------------------------------------------------------------ topbar */
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand-mark {
+  display: block;
+  font-family: var(--mono);
+  font-size: 1.45rem;
+  letter-spacing: 0.22em;
+  font-weight: 700;
+}
+
+.brand-mark .accent {
+  color: var(--red);
+  text-shadow: 0 0 12px var(--red-soft), 0 0 28px var(--red-soft);
+}
+
+.brand-sub {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.ip-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.ip-field span {
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.ip-field input {
+  width: 118px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+}
+
+.btn {
+  height: 34px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.btn:hover { border-color: var(--red-soft); background: rgba(255, 45, 70, 0.08); }
+.btn[aria-pressed="true"] { border-color: var(--green); color: var(--green); }
+
+.status {
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+}
+
+.status::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.status--live    { color: var(--green); }
+.status--demo    { color: var(--amber); }
+.status--offline { color: var(--muted); }
+
+/* ------------------------------------------------------------------ alert */
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 18px;
+  padding: 12px 16px;
+  border: 1px solid var(--red-soft);
+  border-radius: 10px;
+  background: rgba(255, 45, 70, 0.07);
+  animation: alert-pulse 1.6s ease-in-out infinite alternate;
+}
+
+@keyframes alert-pulse {
+  from { box-shadow: 0 0 0 rgba(255, 45, 70, 0); }
+  to   { box-shadow: 0 0 26px rgba(255, 45, 70, 0.28); }
+}
+
+.alert-icon { width: 40px; height: 40px; flex: none; }
+.alert-text { display: flex; flex-direction: column; gap: 3px; font-size: 0.82rem; color: var(--muted); }
+.alert-text strong { color: var(--red); font-size: 0.9rem; }
+
+.alert-link {
+  margin-left: auto;
+  flex: none;
+  color: var(--red);
+  font-size: 0.78rem;
+  text-decoration: none;
+  border-bottom: 1px solid var(--red-soft);
+}
+
+/* ------------------------------------------------------------------ stage */
+.stage {
+  display: grid;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+}
+
+.panel--hero {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 20px 28px;
+}
+
+.heart-wrap { flex: none; width: 160px; height: 160px; display: grid; place-items: center; }
+
+#heart {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: scale(1);
+  transition: transform 90ms ease-out, filter 90ms ease-out;
+  filter: drop-shadow(0 0 6px rgba(255, 45, 70, 0.25));
+}
+
+#heart.beat {
+  transform: scale(1.16);
+  filter: drop-shadow(0 0 22px rgba(255, 45, 70, 0.75));
+}
+
+.bpm-line { display: flex; align-items: baseline; gap: 10px; }
+
+.bpm {
+  font-family: var(--mono);
+  font-size: 5.4rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--green);
+  text-shadow: 0 0 22px rgba(45, 224, 138, 0.35);
+  transition: color 0.3s, text-shadow 0.3s;
+}
+
+.bpm.out-of-range {
+  color: var(--red);
+  text-shadow: 0 0 22px var(--red-soft);
+}
+
+.bpm.unknown { color: var(--muted); text-shadow: none; }
+
+.bpm-unit {
+  font-family: var(--mono);
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+}
+
+.readout-sub {
+  margin-top: 8px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+/* ------------------------------------------------------------------ chart */
+.panel--chart { padding: 16px 18px 10px; }
+
+.panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.panel-head h2 {
+  margin: 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.panel-note { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); }
+
+#wave { width: 100%; height: 220px; display: block; }
+
+/* ------------------------------------------------------------------ groups */
+.group { display: flex; flex-direction: column; gap: 10px; }
+
+.group-title {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.group-title span {
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+
+.group-title--measured  { color: var(--green); }
+.group-title--simulated { color: var(--amber); }
+
+/* ------------------------------------------------------------------ metrics */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+}
+
+.metric-label {
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.metrics--simulated { grid-template-columns: repeat(3, 1fr); }
+
+/* Simulated values are visually quarantined: dashed border, amber tint and a
+   "sim" tag, so no reviewer can mistake them for a measurement. */
+.metric--sim {
+  border-style: dashed;
+  border-color: rgba(255, 176, 46, 0.35);
+  background: rgba(255, 176, 46, 0.04);
+}
+
+.metric--sim .metric-label em {
+  font-style: normal;
+  margin-left: 6px;
+  padding: 1px 5px;
+  border: 1px solid rgba(255, 176, 46, 0.5);
+  border-radius: 4px;
+  color: var(--amber);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+}
+
+.metric--sim .metric-value { color: #c9a86a; }
+
+.metric-value { font-family: var(--mono); font-size: 1.32rem; }
+.metric-value.bad { color: var(--red); }
+.metric-value.good { color: var(--green); }
+
+/* ------------------------------------------------------------------ footer */
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.footer a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--line); }
+.footer a:hover { color: var(--red); }
+
+@media (max-width: 860px) {
+  .metrics, .metrics--simulated { grid-template-columns: repeat(2, 1fr); }
+  .panel--hero { flex-direction: column; text-align: center; gap: 12px; }
+  .bpm { font-size: 4rem; }
+  .alert-link { margin-left: 0; }
+}

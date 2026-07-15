@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardia &middot; Real-Time ECG Monitor</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<canvas id="grid" aria-hidden="true"></canvas>
+
+<div class="shell">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">CARD<span class="accent">IA</span></span>
+      <span class="brand-sub">AD8232 &rarr; Arduino &rarr; Ethernet &rarr; Browser</span>
+    </div>
+
+    <div class="controls">
+      <label class="ip-field">
+        <span>Device</span>
+        <input id="ip-input" type="text" spellcheck="false" autocomplete="off">
+      </label>
+      <button id="connect-btn" class="btn" type="button">Connect</button>
+      <button id="demo-btn" class="btn" type="button">Demo</button>
+      <button id="sound-btn" class="btn" type="button" aria-pressed="false">Sound: off</button>
+      <span id="status" class="status status--offline">Offline</span>
+    </div>
+  </header>
+
+  <div id="alert" class="alert" hidden>
+    <img src="assets/alert.png" alt="" class="alert-icon">
+    <div class="alert-text">
+      <strong id="alert-title">Heart rate outside the resting range</strong>
+      <span>A resting adult typically measures 60&ndash;100&nbsp;BPM. This is a hobby
+      instrument, not a medical device &mdash; see a doctor, not a dashboard.</span>
+    </div>
+    <a class="alert-link" href="https://www.acibadem.com.tr/ilgi-alani/kalp-hastaliklari/"
+       target="_blank" rel="noopener">Learn more</a>
+  </div>
+
+  <main class="stage">
+
+    <section class="panel panel--hero">
+      <div class="heart-wrap">
+        <img id="heart" src="assets/heart.png" alt="Heart illustration reacting to each detected R-peak">
+      </div>
+      <div class="readout">
+        <div class="bpm-line">
+          <span id="bpm" class="bpm">--</span>
+          <span class="bpm-unit">BPM</span>
+        </div>
+        <div class="readout-sub">
+          <span id="beat-source">waiting for data</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel--chart">
+      <div class="panel-head">
+        <h2>ECG waveform</h2>
+        <span class="panel-note">raw ADC, 0&ndash;1023 &middot; 125&nbsp;Hz &middot; ~0.8&nbsp;s window</span>
+      </div>
+      <canvas id="wave" height="220"></canvas>
+    </section>
+
+    <section class="group">
+      <h2 class="group-title group-title--measured">Measured <span>&mdash; derived from the AD8232 signal</span></h2>
+      <div class="metrics">
+        <div class="metric">
+          <span class="metric-label">R&ndash;R interval</span>
+          <span id="m-ibi" class="metric-value">--</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Signal amplitude</span>
+          <span id="m-amp" class="metric-value">--</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Signal quality</span>
+          <span id="m-quality" class="metric-value">--</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">R-peaks since boot</span>
+          <span id="m-beats" class="metric-value">--</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2 class="group-title group-title--simulated">
+        Simulated
+        <span>&mdash; placeholder values, this hardware cannot measure them</span>
+      </h2>
+      <div class="metrics metrics--simulated">
+        <div class="metric metric--sim">
+          <span class="metric-label">Blood pressure <em>sim</em></span>
+          <span id="s-bp" class="metric-value">--</span>
+        </div>
+        <div class="metric metric--sim">
+          <span class="metric-label">Blood oxygen <em>sim</em></span>
+          <span id="s-spo2" class="metric-value">--</span>
+        </div>
+        <div class="metric metric--sim">
+          <span class="metric-label">Cardiovascular index <em>sim</em></span>
+          <span id="s-cvi" class="metric-value">--</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <span id="footer-note">Cardia &mdash; heart rate is measured; the simulated panel is
+      labelled as such and never mixed in with it.</span>
+    <a href="https://github.com/nisamaasoglu" target="_blank" rel="noopener">github.com/nisamaasoglu</a>
+  </footer>
+
+</div>
+
+<audio id="beat-audio" src="assets/heartbeat.mp3" preload="auto"></audio>
+<script src="app.js"></script>
+</body>
+</html>
