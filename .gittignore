@@ -1,0 +1,12 @@
+.pio/
+.pioenvs/
+.piolibdeps/
+build/
+*.o
+*.elf
+*.bin
+__pycache__/
+*.py[cod]
+.DS_Store
+.idea/
+.vscode/
