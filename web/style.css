@@ -367,3 +367,6 @@ html, body {
   .bpm { font-size: 4rem; }
   .alert-link { margin-left: 0; }
 }
+
+/* keep the alert hidden until the reading is out of range */
+.alert[hidden] { display: none; }
