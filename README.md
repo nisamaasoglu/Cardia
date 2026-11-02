@@ -1,5 +1,7 @@
 # Cardia — Real-Time ECG Monitor
 
+[![CI](https://github.com/nisamaasoglu/Cardia/actions/workflows/ci.yml/badge.svg)](https://github.com/nisamaasoglu/Cardia/actions/workflows/ci.yml)
+
 **Version 2 · Completed**
 
 An Arduino reads a single-lead ECG from an AD8232 breakout, detects R-peaks on the
@@ -133,6 +135,19 @@ Open `http://localhost:8000`, type the board's address in the **Device** field a
 network; the firmware sends `Access-Control-Allow-Origin: *` so the cross-origin fetch
 succeeds.
 
+**Tests**
+
+```bash
+npm install
+npx playwright install chromium
+npm test
+```
+
+The tests open the real dashboard in headless Chromium and stand in for the board by answering
+its HTTP requests: in-range, high, low and weak-signal readings, an unreachable board falling
+back to demo mode, and the simulated panel staying in its bounds and labelled `sim`. No hardware
+is needed; CI runs them on every push.
+
 ## Project structure
 
 ```
@@ -142,9 +157,11 @@ web/style.css                              dark instrument-panel styling
 web/app.js                                 polling, demo generator, canvas rendering
 web/assets/                                heart and alert artwork, heartbeat audio
 docs/dashboard.png                         dashboard running in demo mode
+tests/dashboard.test.mjs                   browser tests with a stand-in board
 ```
 
-No build step, no bundler, no CDN — the dashboard is three files and opens as-is.
+No build step, no bundler, no CDN — the dashboard is three files and opens as-is. The only
+dependency (Playwright) is for the tests.
 
 ## Scope
 
